@@ -21,7 +21,7 @@ permissions:
 
 jobs:
   analyze:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     name: CodeQL Analysis
 
     steps:
@@ -35,8 +35,8 @@ jobs:
         with:
           dotnet-version: '10.x'
 
-      - name: Restore mobile workloads
-        run: dotnet workload restore ./src/Soenneker.Maui.Permissioners.Notifications/Soenneker.Maui.Permissioners.Notifications.csproj --verbosity minimal
+      - name: Restore Android workload
+        run: dotnet workload restore ./src/Soenneker.Maui.Permissioners.Notifications/Soenneker.Maui.Permissioners.Notifications.csproj -p:TargetFrameworks=net10.0-android --verbosity minimal
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v4
@@ -45,10 +45,26 @@ jobs:
           build-mode: manual
 
       - name: Restore src
-        run: dotnet restore ./src/Soenneker.Maui.Permissioners.Notifications/Soenneker.Maui.Permissioners.Notifications.csproj --verbosity minimal
+        run: dotnet restore ./src/Soenneker.Maui.Permissioners.Notifications/Soenneker.Maui.Permissioners.Notifications.csproj -p:TargetFrameworks=net10.0-android --verbosity minimal
 
       - name: Build src
-        run: dotnet build ./src/Soenneker.Maui.Permissioners.Notifications/Soenneker.Maui.Permissioners.Notifications.csproj --configuration Release --no-restore --verbosity minimal
+        run: dotnet build ./src/Soenneker.Maui.Permissioners.Notifications/Soenneker.Maui.Permissioners.Notifications.csproj -p:TargetFrameworks=net10.0-android --configuration Release --no-restore --verbosity minimal
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v4
+        with:
+          upload: false
+          output: results
+
+      - name: Preserve CodeQL results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: codeql-results
+          path: results/*.sarif
+          if-no-files-found: ignore
+
+      - name: Upload code scanning results
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: results
