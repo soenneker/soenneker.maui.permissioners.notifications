@@ -1,0 +1,53 @@
+name: build-and-test
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  PipelineEnvironment: true
+  NUGET_XMLDOC_MODE: skip
+
+jobs:
+  build-and-test:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Workload restore
+        run: dotnet workload restore src/Soenneker.Maui.Permissioners.Notifications/Soenneker.Maui.Permissioners.Notifications.csproj --verbosity minimal
+
+      - name: Restore tests
+        run: dotnet restore test/Soenneker.Maui.Permissioners.Notifications.Tests/Soenneker.Maui.Permissioners.Notifications.Tests.csproj --verbosity minimal
+
+      - name: Build tests
+        run: dotnet build test/Soenneker.Maui.Permissioners.Notifications.Tests/Soenneker.Maui.Permissioners.Notifications.Tests.csproj --configuration Release --no-restore --verbosity minimal
+
+      - name: Test
+        run: dotnet test --project test/Soenneker.Maui.Permissioners.Notifications.Tests/Soenneker.Maui.Permissioners.Notifications.Tests.csproj --configuration Release --no-build --no-restore --verbosity minimal
+
+      - name: Restore library
+        run: dotnet restore src/Soenneker.Maui.Permissioners.Notifications/Soenneker.Maui.Permissioners.Notifications.csproj --verbosity minimal
+
+      - name: Build library
+        run: dotnet build src/Soenneker.Maui.Permissioners.Notifications/Soenneker.Maui.Permissioners.Notifications.csproj --configuration Release --no-restore --verbosity minimal
+
+      - name: Pack
+        run: dotnet pack src/Soenneker.Maui.Permissioners.Notifications/Soenneker.Maui.Permissioners.Notifications.csproj --configuration Release --no-build --no-restore --output . --verbosity minimal
