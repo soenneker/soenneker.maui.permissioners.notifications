@@ -21,7 +21,7 @@ permissions:
 
 jobs:
   analyze:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     name: CodeQL Analysis
 
     steps:
@@ -34,6 +34,9 @@ jobs:
         uses: actions/setup-dotnet@v6
         with:
           dotnet-version: '10.x'
+
+      - name: Restore mobile workloads
+        run: dotnet workload restore ./src/Soenneker.Maui.Permissioners.Notifications/Soenneker.Maui.Permissioners.Notifications.csproj --verbosity minimal
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v4
