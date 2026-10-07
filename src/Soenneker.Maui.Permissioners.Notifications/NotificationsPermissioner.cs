@@ -1,5 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
+using Soenneker.Asyncs.Semaphores;
 using Soenneker.Maui.Permissioners.Notifications.Abstract;
 #if ANDROID || IOS
 using Microsoft.Maui.ApplicationModel;
@@ -13,7 +14,7 @@ namespace Soenneker.Maui.Permissioners.Notifications;
 
 public sealed class NotificationsPermissioner : INotificationsPermissioner
 {
-    private static readonly SemaphoreSlim _gate = new(1, 1);
+    private static readonly AsyncSemaphore _gate = new(1);
 
     public bool IsSupported =>
 #if ANDROID || IOS
@@ -51,7 +52,7 @@ public sealed class NotificationsPermissioner : INotificationsPermissioner
 
     private async Task<bool> RequestCore(CancellationToken cancellationToken)
     {
-        await _gate.WaitAsync(cancellationToken).ConfigureAwait(false);
+        SemaphoreLease lease = await _gate.Acquire(cancellationToken).ConfigureAwait(false);
         try
         {
             if (await Has(cancellationToken).ConfigureAwait(false))
@@ -77,7 +78,7 @@ public sealed class NotificationsPermissioner : INotificationsPermissioner
         }
         finally
         {
-            _gate.Release();
+            lease.Dispose();
         }
     }
 }
