@@ -10,18 +10,18 @@ namespace Soenneker.Maui.Permissioners.Notifications.Tests;
 public sealed class NotificationsPermissionerTests
 {
     [Test]
-    public async Task Unsupported_platform_never_reports_granted()
+    public async Task Unsupported_platform_never_reports_granted(CancellationToken cancellationToken)
     {
         var permissioner = new NotificationsPermissioner();
         await Assert.That(permissioner.IsSupported).IsFalse();
-        await Assert.That(await permissioner.Has()).IsFalse();
-        await Assert.That(await permissioner.Request()).IsFalse();
-        await Assert.That(await permissioner.RequestIfNotGranted()).IsFalse();
+        await Assert.That(await permissioner.Has(cancellationToken: cancellationToken)).IsFalse();
+        await Assert.That(await permissioner.Request(cancellationToken: cancellationToken)).IsFalse();
+        await Assert.That(await permissioner.RequestIfNotGranted(cancellationToken: cancellationToken)).IsFalse();
         
     }
 
     [Test]
-    public async Task Canceled_requests_are_observed_even_when_unsupported()
+    public async Task Canceled_requests_are_observed_even_when_unsupported(CancellationToken cancellationToken)
     {
         var permissioner = new NotificationsPermissioner();
         using var cancellation = new CancellationTokenSource();
@@ -33,7 +33,7 @@ public sealed class NotificationsPermissionerTests
     }
 
     [Test]
-    public async Task Registration_preserves_existing_lifetime()
+    public async Task Registration_preserves_existing_lifetime(CancellationToken cancellationToken)
     {
         var services = new ServiceCollection();
         services.AddNotificationsPermissionerAsScoped();
