@@ -33,10 +33,10 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: '10.x'
+          dotnet-version: '11.0.100-rc.3.26522.148'
 
       - name: Restore Android workload
-        run: dotnet workload restore ./src/Soenneker.Maui.Permissioners.Notifications/Soenneker.Maui.Permissioners.Notifications.csproj -p:TargetFrameworks=net10.0-android --verbosity minimal
+        run: dotnet workload restore ./src/Soenneker.Maui.Permissioners.Notifications/Soenneker.Maui.Permissioners.Notifications.csproj -p:TargetFrameworks=net11.0-android --verbosity minimal
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v4
@@ -45,10 +45,10 @@ jobs:
           build-mode: manual
 
       - name: Restore src
-        run: dotnet restore ./src/Soenneker.Maui.Permissioners.Notifications/Soenneker.Maui.Permissioners.Notifications.csproj -p:TargetFrameworks=net10.0-android --verbosity minimal
+        run: dotnet restore ./src/Soenneker.Maui.Permissioners.Notifications/Soenneker.Maui.Permissioners.Notifications.csproj -p:TargetFrameworks=net11.0-android --verbosity minimal
 
       - name: Build src
-        run: dotnet build ./src/Soenneker.Maui.Permissioners.Notifications/Soenneker.Maui.Permissioners.Notifications.csproj -p:TargetFrameworks=net10.0-android --configuration Release --no-restore --verbosity minimal
+        run: dotnet build ./src/Soenneker.Maui.Permissioners.Notifications/Soenneker.Maui.Permissioners.Notifications.csproj -p:TargetFrameworks=net11.0-android --configuration Release --no-restore --verbosity minimal
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v4
