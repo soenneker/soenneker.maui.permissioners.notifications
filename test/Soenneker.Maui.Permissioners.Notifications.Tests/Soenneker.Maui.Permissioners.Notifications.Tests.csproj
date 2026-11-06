@@ -6,7 +6,7 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="TUnit" Version="1.81.0" />
+    <PackageReference Include="TUnit" Version="1.81.10" />
     <ProjectReference Include="../../src/Soenneker.Maui.Permissioners.Notifications/Soenneker.Maui.Permissioners.Notifications.csproj" />
   </ItemGroup>
 </Project>
