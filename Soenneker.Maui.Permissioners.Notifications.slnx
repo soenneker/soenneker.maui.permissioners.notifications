@@ -11,6 +11,7 @@
     <Project Path="src/Soenneker.Maui.Permissioners.Notifications/Soenneker.Maui.Permissioners.Notifications.csproj" />
   </Folder>
   <Folder Name="/test/">
+    <Project Path="test/Soenneker.Maui.Permissioners.Notifications.DeviceTests/Soenneker.Maui.Permissioners.Notifications.DeviceTests.csproj" />
     <Project Path="test/Soenneker.Maui.Permissioners.Notifications.Tests/Soenneker.Maui.Permissioners.Notifications.Tests.csproj" />
   </Folder>
 </Solution>
