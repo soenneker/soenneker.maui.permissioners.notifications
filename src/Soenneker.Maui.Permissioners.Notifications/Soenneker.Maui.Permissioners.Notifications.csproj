@@ -49,6 +49,6 @@
 
     <ItemGroup>
         <PackageReference Include="Soenneker.Asyncs.Semaphores" Version="11.0.36" />
-        <PackageReference Include="Microsoft.Maui.Essentials" Version="11.0.0-rc.2.26505.5" />
+        <PackageReference Include="Microsoft.Maui.Essentials" Version="11.0.0" />
     </ItemGroup>
 </Project>
