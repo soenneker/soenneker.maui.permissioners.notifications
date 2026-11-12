@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <PackageReference Include="MSTest.TestFramework" Version="4.3.2" />
-    <PackageReference Include="MSTest.TestAdapter" Version="4.5.2" />
+    <PackageReference Include="MSTest.TestAdapter" Version="4.5.3" />
     <PackageReference Include="Microsoft.Testing.Extensions.TrxReport" Version="2.3.2" />
     <ProjectReference Include="../../src/Soenneker.Maui.Permissioners.Notifications/Soenneker.Maui.Permissioners.Notifications.csproj" />
   </ItemGroup>
